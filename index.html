@@ -5,79 +5,108 @@
 <title>GlowGems Jewellery</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial}
-body{background:#fff7fb}
-header{background:#ff3e8a;color:white;padding:15px;text-align:center;font-size:22px;font-weight:bold}
-.container{max-width:1200px;margin:auto;padding:20px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:15px}
-.card{background:white;border-radius:12px;padding:10px;box-shadow:0 4px 10px rgba(0,0,0,0.08);text-align:center}
+body{background:#fafafa}
+header{background:#ff3e8a;color:white;padding:14px;text-align:center;font-size:22px;font-weight:bold}
+.container{max-width:1100px;margin:auto;padding:15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.card{background:white;border-radius:12px;padding:10px;box-shadow:0 3px 8px rgba(0,0,0,.08);text-align:center}
 .card img{width:100%;border-radius:10px}
-.price{color:#ff3e8a;font-weight:bold;margin:6px 0}
-button{border:none;background:#ff3e8a;color:white;padding:8px 10px;border-radius:6px;margin:3px;cursor:pointer;font-size:13px}
-button:hover{opacity:.9}
-footer{text-align:center;padding:20px;color:#666;font-size:14px}
+.price{color:#ff3e8a;font-weight:bold;margin:5px 0}
+button{border:none;background:#ff3e8a;color:white;padding:7px 10px;border-radius:6px;margin:3px;font-size:12px;cursor:pointer}
+.cartBtn{background:black}
+.admin{background:#fff;border-radius:10px;padding:12px;margin-top:20px;box-shadow:0 3px 8px rgba(0,0,0,.08)}
+input{width:100%;padding:8px;margin:5px 0;border:1px solid #ddd;border-radius:6px}
+.checkout{position:fixed;bottom:0;left:0;width:100%;background:white;padding:10px;border-top:1px solid #ddd}
+.checkout button{width:100%;padding:12px;font-size:15px}
+.cartCount{background:black;color:white;border-radius:50%;padding:3px 7px;font-size:11px;margin-left:5px}
 </style>
 </head>
-<body><header>GlowGems Artificial Jewellery</header><div class="container">
-<h2 style="margin-bottom:15px">Trending Jewellery</h2><div class="grid" id="productGrid"></div></div><footer>
-Order Support WhatsApp: +91XXXXXXXXXX
-</footer><script>
+<body><header>GlowGems Jewellery 🛍️ <span id="cartCount" class="cartCount">0</span></header><div class="container"><h3 style="margin-bottom:10px">Trending Jewellery</h3><div class="grid" id="productGrid"></div><div class="admin">
+<h3>Add Product (Admin Panel)</h3>
+<input id="pname" placeholder="Product name">
+<input id="pprice" placeholder="Price">
+<input id="pimg" placeholder="Image URL">
+<button onclick="addProduct()">Upload Product</button>
+</div></div><div class="checkout">
+<button onclick="openCheckout()">Checkout</button>
+</div><script>
 
-const upiID = "7827372300@ibl";
-const phone = "917827372300";
-
-const products = [
+const upiID="7827372300@ibl";
+let products=JSON.parse(localStorage.getItem("products"))||[
 {name:"Royal Jhumka",price:199,img:"https://picsum.photos/300?1"},
 {name:"Pearl Earrings",price:149,img:"https://picsum.photos/300?2"},
 {name:"Silver Payal",price:249,img:"https://picsum.photos/300?3"},
-{name:"Wedding Jhumka",price:299,img:"https://picsum.photos/300?4"},
-{name:"Golden Bali",price:129,img:"https://picsum.photos/300?5"},
-{name:"Traditional Payal",price:259,img:"https://picsum.photos/300?6"},
-{name:"Kundan Earrings",price:219,img:"https://picsum.photos/300?7"},
-{name:"Bridal Jhumka",price:349,img:"https://picsum.photos/300?8"},
-{name:"Oxidised Earrings",price:189,img:"https://picsum.photos/300?9"},
-{name:"Designer Payal",price:279,img:"https://picsum.photos/300?10"},
-{name:"Classic Jhumka",price:159,img:"https://picsum.photos/300?11"},
-{name:"Stone Earrings",price:199,img:"https://picsum.photos/300?12"},
-{name:"Antique Payal",price:299,img:"https://picsum.photos/300?13"},
-{name:"Pearl Jhumka",price:239,img:"https://picsum.photos/300?14"},
-{name:"Party Earrings",price:179,img:"https://picsum.photos/300?15"},
-{name:"Lightweight Payal",price:199,img:"https://picsum.photos/300?16"},
-{name:"Temple Jhumka",price:329,img:"https://picsum.photos/300?17"},
-{name:"Stud Earrings",price:99,img:"https://picsum.photos/300?18"},
-{name:"Heavy Payal",price:349,img:"https://picsum.photos/300?19"},
-{name:"Chandbali",price:269,img:"https://picsum.photos/300?20"},
-{name:"Mini Earrings",price:119,img:"https://picsum.photos/300?21"},
-{name:"Ethnic Payal",price:259,img:"https://picsum.photos/300?22"},
-{name:"Festival Jhumka",price:289,img:"https://picsum.photos/300?23"},
-{name:"Rose Earrings",price:159,img:"https://picsum.photos/300?24"},
-{name:"Daily Wear Payal",price:199,img:"https://picsum.photos/300?25"},
-{name:"Designer Chandbali",price:319,img:"https://picsum.photos/300?26"},
-{name:"Trendy Earrings",price:149,img:"https://picsum.photos/300?27"},
-{name:"Luxury Payal",price:379,img:"https://picsum.photos/300?28"},
-{name:"Vintage Jhumka",price:299,img:"https://picsum.photos/300?29"},
-{name:"Modern Earrings",price:169,img:"https://picsum.photos/300?30"}
+{name:"Bridal Jhumka",price:349,img:"https://picsum.photos/300?4"}
 ];
 
-const grid = document.getElementById("productGrid");
+let cart=[];
 
-products.forEach(p=>{
-
-const upiLink=`upi://pay?pa=${upiID}&pn=JewelleryStore&am=${p.price}`;
-const waLink=`https://wa.me/${phone}?text=I want to order ${p.name} for ₹${p.price}`;
+function render(){
+const grid=document.getElementById("productGrid");
+grid.innerHTML="";
+products.forEach((p,i)=>{
 
 const card=`
 <div class="card">
 <img src="${p.img}">
 <h4>${p.name}</h4>
 <div class="price">₹${p.price}</div>
-<a href="${upiLink}"><button>Pay UPI</button></a>
-<a href="${waLink}"><button>WhatsApp Order</button></a>
-</div>
-`;
+<button onclick="addToCart(${i})">Add to Cart</button>
+</div>`;
 
 grid.innerHTML+=card;
 
 });
+}
+
+function addProduct(){
+
+const name=document.getElementById("pname").value;
+const price=document.getElementById("pprice").value;
+const img=document.getElementById("pimg").value;
+
+products.push({name,price,img});
+localStorage.setItem("products",JSON.stringify(products));
+
+render();
+alert("Product uploaded");
+
+}
+
+function addToCart(i){
+cart.push(products[i]);
+updateCart();
+}
+
+function updateCart(){
+
+document.getElementById("cartCount").innerText=cart.length;
+
+}
+
+function openCheckout(){
+
+if(cart.length==0){alert("Cart empty");return}
+
+let total=0;
+cart.forEach(p=>total+=Number(p.price));
+
+const pay=`upi://pay?pa=${upiID}&pn=GlowGems&am=${total}`;
+
+const html=`
+<h2>Total ₹${total}</h2>
+<br>
+<a href='${pay}'><button style='width:100%;padding:15px'>Pay via UPI</button></a>
+<br><br>
+<button onclick='alert("Order placed with Cash on Delivery")' style='width:100%;padding:15px;background:black'>Cash on Delivery</button>
+`;
+
+const w=window.open();
+w.document.write(html);
+
+}
+
+render();
 
 </script></body>
 </html>
