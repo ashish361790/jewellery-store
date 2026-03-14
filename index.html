@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlowGems Jewellery</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial}
+body{background:#fff7fb}
+header{background:#ff3e8a;color:white;padding:15px;text-align:center;font-size:22px;font-weight:bold}
+.container{max-width:1200px;margin:auto;padding:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:15px}
+.card{background:white;border-radius:12px;padding:10px;box-shadow:0 4px 10px rgba(0,0,0,0.08);text-align:center}
+.card img{width:100%;border-radius:10px}
+.price{color:#ff3e8a;font-weight:bold;margin:6px 0}
+button{border:none;background:#ff3e8a;color:white;padding:8px 10px;border-radius:6px;margin:3px;cursor:pointer;font-size:13px}
+button:hover{opacity:.9}
+footer{text-align:center;padding:20px;color:#666;font-size:14px}
+</style>
+</head>
+<body><header>GlowGems Artificial Jewellery</header><div class="container">
+<h2 style="margin-bottom:15px">Trending Jewellery</h2><div class="grid" id="productGrid"></div></div><footer>
+Order Support WhatsApp: +91XXXXXXXXXX
+</footer><script>
+
+const upiID = "7827372300@ibl";
+const phone = "917827372300";
+
+const products = [
+{name:"Royal Jhumka",price:199,img:"https://picsum.photos/300?1"},
+{name:"Pearl Earrings",price:149,img:"https://picsum.photos/300?2"},
+{name:"Silver Payal",price:249,img:"https://picsum.photos/300?3"},
+{name:"Wedding Jhumka",price:299,img:"https://picsum.photos/300?4"},
+{name:"Golden Bali",price:129,img:"https://picsum.photos/300?5"},
+{name:"Traditional Payal",price:259,img:"https://picsum.photos/300?6"},
+{name:"Kundan Earrings",price:219,img:"https://picsum.photos/300?7"},
+{name:"Bridal Jhumka",price:349,img:"https://picsum.photos/300?8"},
+{name:"Oxidised Earrings",price:189,img:"https://picsum.photos/300?9"},
+{name:"Designer Payal",price:279,img:"https://picsum.photos/300?10"},
+{name:"Classic Jhumka",price:159,img:"https://picsum.photos/300?11"},
+{name:"Stone Earrings",price:199,img:"https://picsum.photos/300?12"},
+{name:"Antique Payal",price:299,img:"https://picsum.photos/300?13"},
+{name:"Pearl Jhumka",price:239,img:"https://picsum.photos/300?14"},
+{name:"Party Earrings",price:179,img:"https://picsum.photos/300?15"},
+{name:"Lightweight Payal",price:199,img:"https://picsum.photos/300?16"},
+{name:"Temple Jhumka",price:329,img:"https://picsum.photos/300?17"},
+{name:"Stud Earrings",price:99,img:"https://picsum.photos/300?18"},
+{name:"Heavy Payal",price:349,img:"https://picsum.photos/300?19"},
+{name:"Chandbali",price:269,img:"https://picsum.photos/300?20"},
+{name:"Mini Earrings",price:119,img:"https://picsum.photos/300?21"},
+{name:"Ethnic Payal",price:259,img:"https://picsum.photos/300?22"},
+{name:"Festival Jhumka",price:289,img:"https://picsum.photos/300?23"},
+{name:"Rose Earrings",price:159,img:"https://picsum.photos/300?24"},
+{name:"Daily Wear Payal",price:199,img:"https://picsum.photos/300?25"},
+{name:"Designer Chandbali",price:319,img:"https://picsum.photos/300?26"},
+{name:"Trendy Earrings",price:149,img:"https://picsum.photos/300?27"},
+{name:"Luxury Payal",price:379,img:"https://picsum.photos/300?28"},
+{name:"Vintage Jhumka",price:299,img:"https://picsum.photos/300?29"},
+{name:"Modern Earrings",price:169,img:"https://picsum.photos/300?30"}
+];
+
+const grid = document.getElementById("productGrid");
+
+products.forEach(p=>{
+
+const upiLink=`upi://pay?pa=${upiID}&pn=JewelleryStore&am=${p.price}`;
+const waLink=`https://wa.me/${phone}?text=I want to order ${p.name} for ₹${p.price}`;
+
+const card=`
+<div class="card">
+<img src="${p.img}">
+<h4>${p.name}</h4>
+<div class="price">₹${p.price}</div>
+<a href="${upiLink}"><button>Pay UPI</button></a>
+<a href="${waLink}"><button>WhatsApp Order</button></a>
+</div>
+`;
+
+grid.innerHTML+=card;
+
+});
+
+</script></body>
+</html>
